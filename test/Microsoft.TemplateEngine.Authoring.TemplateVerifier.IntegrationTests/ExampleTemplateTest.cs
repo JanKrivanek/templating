@@ -59,7 +59,7 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
         ///////////////////////////////////////////////////////////////////////////////////////////////
 
         [Fact]
-        public async void MyAwesomeTemplate_IsBackCompatible()
+        public async void MyAwesomeTemplate_IsBackCompatible_Basic()
         {
             string templateShortName = "ConditionalParams";
             string testAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!;
@@ -68,9 +68,7 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
             TemplateVerifierOptions options = new TemplateVerifierOptions(templateName: templateShortName)
             {
                 // Run the specific template scenario
-                TemplateSpecificArgs = new string[] { "--Platform", "iOS", "--Platform", "MacOS" },
-                //TestCase 3: TemplateSpecificArgs = new string[] { "--Platform", "iOS", "--Platform", "android" },
-                //TestCase 2: TemplateSpecificArgs = new string[] { "--Platform", "android", "--UseGsmLocator", "true" },
+                TemplateSpecificArgs = new[] { "--Platform", "Windows", "--Platform", "WindowsPhone" },
                 // With local template files (or locally installed template)
                 TemplatePath = templateLocation,
                 // Capture the command outputs if needed
@@ -79,6 +77,44 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
                 VerificationExcludePatterns = new[] { "*.csproj" },
                 // Decide on differentiating runs of tests
                 UniqueFor = UniqueForOption.Architecture,
+            }
+            // Scrub files content
+            .WithCustomScrubbers(
+                ScrubbersDefinition.Empty
+                    .AddScrubber(sb => sb.Replace("value of ", "#VAL#"), "cs")
+                    .AddScrubber((path, content) => content.Replace("SampleTestTemplate", "%TEMPLATE%")));
+
+            VerificationEngine engine = new VerificationEngine(_log);
+            await engine.Execute(options);
+        }
+
+        [Theory]
+        [InlineData(false, new[] { "--Platform", "Windows", "--Platform", "WindowsPhone" })]
+        [InlineData(false, new[] { "--Platform", "android", "--UseGsmLocator", "true", "--AndroidSdkVersion", "v13" })]
+        [InlineData(true, new[] { "--Platform", "android", "--UseGsmLocator", "true" })]
+        [InlineData(true, new[] { "--Platform", "android", "--Platform", "iOS" })]
+        [InlineData(false, new[] { "--Platform", "WindowsPhone", "--Platform", "iOS", "--UseGsmLocator", "true" })]
+        public async void MyAwesomeTemplate_IsBackCompatible(bool shouldFail, string[] args)
+        {
+            string templateShortName = "ConditionalParams";
+            string testAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!;
+            string templateLocation = Path.Combine(testAssemblyLocation, "TestTemplates", "ConditionalParameters");
+
+            TemplateVerifierOptions options = new TemplateVerifierOptions(templateName: templateShortName)
+            {
+                // Run the specific template scenario
+                TemplateSpecificArgs = args,
+                // With local template files (or locally installed template)
+                TemplatePath = templateLocation,
+                // Capture the command outputs if needed
+                VerifyCommandOutput = !shouldFail,
+                IsCommandExpectedToFail = shouldFail,
+                // Filter out (or allow-list) files to check
+                VerificationExcludePatterns = new[] { "*.csproj" },
+                // Decide on differentiating runs of tests
+                UniqueFor = UniqueForOption.Architecture,
+                // Consolidate snapshots of some tests
+                DoNotAppendTemplateArgsToScenarioName = shouldFail,
             }
                 // Scrub files content
                 .WithCustomScrubbers(
