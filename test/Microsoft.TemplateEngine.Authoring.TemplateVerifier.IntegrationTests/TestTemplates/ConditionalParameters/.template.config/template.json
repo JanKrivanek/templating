@@ -1,0 +1,86 @@
+{
+  "author": "janK",
+  "classifications": [ "ShowCase" ],
+  "name": "ShowCase-ConditionalParams-02",
+  "generatorVersions": "[1.0.0.0-*)",
+  "groupIdentity": "ConditionalParams",
+  "precedence": "100",
+  "identity": "ConditionalParams",
+  "shortName": "ConditionalParams",
+  "symbols": {
+    "Platform": {
+      "type": "parameter",
+      "description": "The target framework for the project.",
+      "datatype": "choice",
+      "allowMultipleValues": true,
+      "enableQuotelessLiterals": true,
+      "choices": [
+        {
+          "choice": "Windows",
+          "description": "Windows Desktop"
+        },
+        {
+          "choice": "WindowsPhone",
+          "description": "Windows Phone"
+        },
+        {
+          "choice": "MacOS",
+          "description": "Macintosh computers"
+        },
+        {
+          "choice": "iOS",
+          "description": "iOS mobile"
+        },
+        {
+          "choice": "android",
+          "description": "android mobile"
+        },
+        {
+          "choice": "nix",
+          "description": "Linux distributions"
+        }
+      ],
+      "defaultValue": "MacOS|iOS"
+    },
+	  "IsMobile": {
+      "type": "computed",
+      "value": "((Platform == android || Platform == iOS || Platform == WindowsPhone) && Platform != Windows && Platform != MacOS && Platform != nix)"
+    },
+    "IsAndroidOnly": {
+      "type": "computed",
+      "value": "(Platform == android && Platform != iOS && Platform != WindowsPhone && Platform != Windows && Platform != MacOS && Platform != nix)"
+    },
+	
+	  "AndroidSdkVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "isEnabled": "Platform == android",
+      "isRequired": true,
+      "replaces": "ANDROID_SDK_VERSION"
+    },
+	
+	  "UseGsmLocator": {
+      "type": "parameter",
+      "datatype": "bool",
+      "isEnabled": "((Platform == android || Platform == iOS || Platform == WindowsPhone) && Platform != Windows && Platform != MacOS && Platform != nix)",
+      "isRequired": true,
+      "replaces": "USE_GSM_LOCATOR"
+    },
+	
+    "joinedRename": {
+      "type": "generated",
+      "generator": "join",
+      "replaces": "SupportedPlatforms",
+      "parameters": {
+        "symbols": [
+          {
+            "type": "ref",
+            "value": "Platform"
+          }
+        ],
+        "separator": ", ",
+        "removeEmptyValues": true
+      }
+    }
+  }
+}

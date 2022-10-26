@@ -1,6 +1,7 @@
 ﻿// Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
+using System.Reflection;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Microsoft.TemplateEngine.TestHelper;
@@ -60,13 +61,16 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
         [Fact]
         public async void MyAwesomeTemplate_IsBackCompatible()
         {
-            string templateShortName = "TestAssets.SampleTestTemplate";
-            string templateLocation = Path.Combine(TestTemplatesLocation, "TestTemplate");
+            string templateShortName = "ConditionalParams";
+            string testAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!;
+            string templateLocation = Path.Combine(testAssemblyLocation, "TestTemplates", "ConditionalParameters");
 
             TemplateVerifierOptions options = new TemplateVerifierOptions(templateName: templateShortName)
             {
                 // Run the specific template scenario
-                TemplateSpecificArgs = new string[] { "--paramB", "true" },
+                TemplateSpecificArgs = new string[] { "--Platform", "iOS", "--Platform", "MacOS" },
+                //TestCase 3: TemplateSpecificArgs = new string[] { "--Platform", "iOS", "--Platform", "android" },
+                //TestCase 2: TemplateSpecificArgs = new string[] { "--Platform", "android", "--UseGsmLocator", "true" },
                 // With local template files (or locally installed template)
                 TemplatePath = templateLocation,
                 // Capture the command outputs if needed
@@ -79,7 +83,7 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
                 // Scrub files content
                 .WithCustomScrubbers(
                 ScrubbersDefinition.Empty
-                    .AddScrubber(sb => sb.Replace("B is enabled", "*******"), "cs")
+                    .AddScrubber(sb => sb.Replace("value of ", "#VAL#"), "cs")
                     .AddScrubber((path, content) => content.Replace("SampleTestTemplate", "%TEMPLATE%")));
 
             VerificationEngine engine = new VerificationEngine(_log);
@@ -89,13 +93,14 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
         [Fact]
         public async void MyAwesomeTemplate_IsBackCompatible_CustomCheck()
         {
-            string templateShortName = "TestAssets.SampleTestTemplate";
-            string templateLocation = Path.Combine(TestTemplatesLocation, "TestTemplate");
+            string templateShortName = "ConditionalParams";
+            string testAssemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location!)!;
+            string templateLocation = Path.Combine(testAssemblyLocation, "TestTemplates", "ConditionalParameters");
 
             TemplateVerifierOptions options = new TemplateVerifierOptions(templateName: templateShortName)
             {
                 // Run the specific template scenario
-                TemplateSpecificArgs = new string[] { "--paramB", "true" },
+                TemplateSpecificArgs = new string[] { "--Platform", "iOS", "--Platform", "MacOS" },
                 // With local template files (or locally installed template)
                 TemplatePath = templateLocation,
                 // Capture the command outputs if needed
@@ -105,19 +110,19 @@ namespace Microsoft.TemplateEngine.Authoring.TemplateVerifier.IntegrationTests
                 // Decide on differentiating runs of tests
                 UniqueFor = UniqueForOption.Architecture,
             }
-                // Scrub files content
-                .WithCustomScrubbers(
+            // Scrub files content
+            .WithCustomScrubbers(
                 ScrubbersDefinition.Empty
-                    .AddScrubber(sb => sb.Replace("B is enabled", "*******"), "cs")
+                    .AddScrubber(sb => sb.Replace("value of ", "#VAL#"), "cs")
                     .AddScrubber((path, content) => content.Replace("SampleTestTemplate", "%TEMPLATE%")))
-                .WithCustomDirectoryVerifier(async (directory, fetcher) =>
+            .WithCustomDirectoryVerifier(async (directory, fetcher) =>
+            {
+                await foreach (var (filePath, scrubbedContent) in fetcher.Value)
                 {
-                    await foreach (var (filePath, scrubbedContent) in fetcher.Value)
-                    {
-                        Path.GetExtension(filePath).Should().BeEquivalentTo(".cs");
-                        scrubbedContent.Should().Contain("*****");
-                    }
-                });
+                    Path.GetExtension(filePath).Should().BeEquivalentTo(".cs");
+                    scrubbedContent.Should().Contain("#VAL#");
+                }
+            });
 
             VerificationEngine engine = new VerificationEngine(_log);
             await engine.Execute(options);
