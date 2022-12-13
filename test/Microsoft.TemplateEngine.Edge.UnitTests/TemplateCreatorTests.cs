@@ -566,14 +566,6 @@ Details: Parameter conditions contain cyclic dependency: [A, B, A] that is preve
                 #endif 
                 """;
 
-            //IReadOnlyDictionary<string, string?> parameters = new Dictionary<string, string?>()
-            //{
-            //    { "A", a_disable_val?.ToString() },
-            //    { "Ap", a?.ToString() },
-            //}
-            //    .Where(p => p.Value != null)
-            //    .ToDictionary(p => p.Key, p => p.Value);
-
             await InstantiateAsyncHelper(
                 TemplateConfigEnabledConditionEvaluationBehavior.Replace("##Enable_Param", paramSnippet),
                 sourceSnippet,
