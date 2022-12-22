@@ -14,7 +14,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "casing";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, CaseChangeMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, CaseChangeMacroConfig config)
         {
             string value = string.Empty;
             if (!variableCollection.TryGetValue(config.Source, out object? working))

@@ -31,7 +31,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             ConstantMacro macro = new();
             ConstantMacroConfig macroConfig = new(macro, null, variableName, value);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
 
@@ -51,7 +51,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             ConstantMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
             Assert.Equal(value, variables[variableName]);
@@ -69,7 +69,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             ConstantMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
             Assert.Equal("True", variables[variableName]);
@@ -87,7 +87,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             ConstantMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
             Assert.Equal("1000", variables[variableName]);
@@ -102,7 +102,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             ConstantMacro macro = new();
             ConstantMacroConfig macroConfig = new(macro, null, variableName, value);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.EvaluateConfig(_engineEnvironmentSettings, variables, macroConfig);
 
@@ -114,7 +114,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         {
             ConstantMacro macro = new();
             Dictionary<string, string> jsonParameters = new(StringComparer.OrdinalIgnoreCase);
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "constant", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'constant' should have 'value' property defined.", ex.Message);
         }

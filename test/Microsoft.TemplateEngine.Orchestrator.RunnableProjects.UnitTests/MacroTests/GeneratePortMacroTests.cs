@@ -26,7 +26,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         [Fact]
         public void BasicMacroTest()
         {
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             GeneratePortNumberMacro macro = new();
             GeneratePortNumberConfig config = new(macro, "test", "integer", 3000, 4000, 5000);
             macro.Evaluate(_engineEnvironmentSettings, variables, config);
@@ -42,7 +42,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         [Fact]
         public void GeneratedSymbolTest()
         {
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             GeneratePortNumberMacro macro = new();
 
             Dictionary<string, string> jsonParameters = new(StringComparer.OrdinalIgnoreCase)
@@ -65,7 +65,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         [Fact]
         public void TestDeterministicMode()
         {
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             GeneratePortNumberMacro macro = new();
             GeneratePortNumberConfig config = new(macro, "test", "integer", 3000, 4000, 5000);
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, config);
@@ -86,7 +86,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
 
             GeneratedSymbol deferredConfig = new(variableName, "port", jsonParameters, "integer");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             GeneratePortNumberMacro macro = new();
 
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, deferredConfig);
@@ -102,7 +102,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
 
             GeneratedSymbol deferredConfig = new(variableName, "port", jsonParameters, "integer");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             GeneratePortNumberMacro macro = new();
 
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, deferredConfig);

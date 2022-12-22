@@ -14,6 +14,6 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Abstractions
         /// Evaluates the macro based on <paramref name="config"/>. The result is modification of variable collection <paramref name="variables"/>.
         /// The evaluation is performed deterministically, i.e. different external factors cannot impact the result and the recurrect evaluation is guaranteed to provide same result.
         /// </summary>
-        void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, T config);
+        void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, T config);
     }
 }

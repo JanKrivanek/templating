@@ -16,7 +16,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => MacroType;
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, EvaluateMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, EvaluateMacroConfig config)
         {
             bool result = config.Evaluator(environmentSettings.Host.Logger, config.Condition, variableCollection);
             variableCollection[config.VariableName] = result;

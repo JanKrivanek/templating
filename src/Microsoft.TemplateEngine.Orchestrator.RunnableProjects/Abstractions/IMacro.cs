@@ -20,7 +20,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Abstractions
         /// Evaluates the macro based on <paramref name="config"/>. The result is modification of variable collection <paramref name="vars"/>.
         /// </summary>
         [Obsolete("Use IMacro<T>.Evaluate instead")]
-        void EvaluateConfig(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, IMacroConfig config);
+        void EvaluateConfig(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, IMacroConfig config);
     }
 
     /// <summary>
@@ -31,6 +31,6 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Abstractions
         /// <summary>
         /// Evaluates the macro based on <paramref name="config"/>. The result is modification of variable collection <paramref name="variables"/>.
         /// </summary>
-        void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, T config);
+        void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, T config);
     }
 }

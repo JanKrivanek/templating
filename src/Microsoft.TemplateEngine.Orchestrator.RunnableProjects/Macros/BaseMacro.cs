@@ -13,10 +13,10 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public abstract Guid Id { get; }
 
-        public abstract void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, T config);
+        public abstract void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, T config);
 
         [Obsolete]
-        public void EvaluateConfig(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, IMacroConfig config)
+        public void EvaluateConfig(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, IMacroConfig config)
         {
             if (config is not T castConfig)
             {

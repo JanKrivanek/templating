@@ -14,14 +14,14 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "random";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, RandomMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, RandomMacroConfig config)
         {
             int value = CryptoRandom.NextInt(config.Low, config.High);
             vars[config.VariableName] = value;
             environmentSettings.Host.Logger.LogDebug("[{macro}]: Variable '{var}' was assigned to value '{value}'.", nameof(RandomMacro), config.VariableName, value);
         }
 
-        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, RandomMacroConfig config)
+        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, RandomMacroConfig config)
         {
             variables[config.VariableName] = config.Low;
             environmentSettings.Host.Logger.LogDebug("[{macro}]: Variable '{var}' was assigned to value '{value}' in deterministic mode.", nameof(RandomMacro), config.VariableName, config.Low);

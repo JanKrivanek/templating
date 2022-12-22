@@ -30,7 +30,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string evaluator = "C++";
             EvaluateMacroConfig macroConfig = new(variableName, "bool", predicate, evaluator);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             EvaluateMacro macro = new();
             macro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
@@ -55,7 +55,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string variableName = "myPredicate";
             EvaluateMacroConfig macroConfig = new(variableName, "bool", condition, evaluator);
 
-            IVariableCollection variables = new VariableCollection
+            IVariableCollectionEx variables = new VariableCollectionEx
             {
                 ["A"] = "A",
                 ["B"] = "B",
@@ -76,7 +76,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string evaluator = "C++";
             EvaluateMacroConfig macroConfig = new(variableName, "bool", "(7 > 3)", evaluator);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             EvaluateMacro macro = new();
             macro.EvaluateConfig(_engineEnvironmentSettings, variables, macroConfig);

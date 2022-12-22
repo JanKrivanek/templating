@@ -33,7 +33,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             CaseChangeMacroConfig macroConfig = new(macro, variableName, null, sourceVariable, toLower);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             string sourceValue = "Original Value SomethingCamelCase";
             variables[sourceVariable] = sourceValue;
 
@@ -53,7 +53,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             CaseChangeMacroConfig macroConfig = new(macro, variableName, null, sourceVariable, toLower);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             string sourceValue = "Original Value SomethingCamelCase";
             variables[sourceVariable] = sourceValue;
@@ -78,7 +78,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             string sourceValue = "Original Value SomethingCamelCase";
             variables[sourceVariable] = sourceValue;
@@ -102,7 +102,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
 
             Assert.False(variables.ContainsKey(variableName));
@@ -119,7 +119,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             CaseChangeMacroConfig macroConfig = new(macro, variableName, null, sourceVariable, toLower);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             string sourceValue = "Original Value SomethingCamelCase";
             variables[sourceVariable] = sourceValue;
 
@@ -136,7 +136,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             GeneratedSymbol symbol = new("test", macro.Type, jsonParameters);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, symbol));
             Assert.Equal("Generated symbol 'test' of type 'casing' should have 'source' property defined.", ex.Message);
         }
@@ -154,7 +154,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CaseChangeMacro macro = new();
             GeneratedSymbol symbol = new(variableName, macro.Type, jsonParameters);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             string sourceValue = "AbC";
             variables[sourceVariable] = sourceValue;
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);

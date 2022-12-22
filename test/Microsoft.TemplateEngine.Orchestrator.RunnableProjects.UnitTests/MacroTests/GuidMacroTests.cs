@@ -30,7 +30,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string variableName = "TestGuid";
             GuidMacroConfig macroConfig = new GuidMacroConfig(variableName, "string", string.Empty, null);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             GuidMacro guidMacro = new();
             guidMacro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
@@ -45,7 +45,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             GeneratedSymbol symbol = new(variableName, "GuidMacro", jsonParameters);
 
             GuidMacro guidMacro = new();
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             guidMacro.Evaluate(_engineEnvironmentSettings, variables, symbol);
             ValidateGuidMacroCreatedParametersWithResolvedValues(variableName, variables);
         }
@@ -57,7 +57,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string variableName = "TestGuid";
             GuidMacroConfig macroConfig = new GuidMacroConfig(variableName, "string", string.Empty, null);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             GuidMacro guidMacro = new();
             guidMacro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
@@ -101,7 +101,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string paramNameUpper = "TestGuidUPPER";
             GuidMacroConfig macroConfigUpper = new GuidMacroConfig(paramNameUpper, "string", string.Empty, "N");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             GuidMacro guidMacro = new();
             guidMacro.Evaluate(_engineEnvironmentSettings, variables, macroConfigLower);
@@ -129,7 +129,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string variableName = "TestGuid";
             GuidMacroConfig macroConfig = new GuidMacroConfig(variableName, "string", "Nn", "n");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             GuidMacro guidMacro = new();
             guidMacro.EvaluateDeterministically(_engineEnvironmentSettings, variables, macroConfig);

@@ -1,12 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Core;
-using Microsoft.TemplateEngine.Core.Contracts;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.ConfigModel;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros;
 using Microsoft.TemplateEngine.TestHelper;
@@ -49,7 +45,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             JoinMacro macro = new();
             JoinMacroConfig macroConfig = new(macro, variableName, null, definitions, separator, removeEmptyValues);
 
-            IVariableCollection variables = new VariableCollection
+            IVariableCollectionEx variables = new VariableCollectionEx
             {
                 [referenceSymbolName] = referenceSymbolValue
             };
@@ -83,7 +79,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             }
             GeneratedSymbol symbol = new(variableName, "JoinMacro", jsonParameters);
 
-            IVariableCollection variables = new VariableCollection
+            IVariableCollectionEx variables = new VariableCollectionEx
             {
                 [referenceSymbolName] = referenceSymbolValue
             };
@@ -116,7 +112,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             JoinMacro macro = new();
             JoinMacroConfig macroConfig = new(macro, variableName, null, definitions, ",", removeEmptyValues: true);
 
-            IVariableCollection variables = new VariableCollection
+            IVariableCollectionEx variables = new VariableCollectionEx
             {
                 [referenceSymbolName] = referenceSymbolValue
             };
@@ -137,7 +133,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
                 { "separator", JExtensions.ToJsonString(",") }
             };
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "join", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'join' should have 'symbols' property defined.", ex.Message);
         }
@@ -154,7 +150,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string symbols = $"[ {{\"type\":\"const\" }}, {{\"type\":\"ref\" , \"value\":\"ref\"  }} ]";
             jsonParameters.Add("symbols", symbols);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "join", jsonParameters)));
             Assert.Equal("Generated symbol 'test': array 'symbols' should contain JSON objects with property 'value'.", ex.Message);
         }
@@ -171,7 +167,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             string symbols = $"[ {{\"type\":\"ref\" , \"value\":\"\"  }} ]";
             jsonParameters.Add("symbols", symbols);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "join", jsonParameters)));
             Assert.Equal("Generated symbol 'test': array 'symbols' should contain JSON objects with property non-empty 'value' when 'type' is 'Ref'.", ex.Message);
         }

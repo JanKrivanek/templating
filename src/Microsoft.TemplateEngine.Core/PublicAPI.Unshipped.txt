@@ -14,11 +14,18 @@ Microsoft.TemplateEngine.Core.Util.ProcessorState.SeekTargetBackWhile(Microsoft.
 Microsoft.TemplateEngine.Core.Util.ProcessorState.WriteToTarget(byte[]! buffer, int offset, int count) -> void
 Microsoft.TemplateEngine.Core.VariableCollection.Parent.get -> Microsoft.TemplateEngine.Abstractions.IVariableCollection?
 Microsoft.TemplateEngine.Core.VariableCollection.Parent.set -> void
+Microsoft.TemplateEngine.Core.VariableCollection.ToVariableCollectionEx() -> Microsoft.TemplateEngine.Core.VariableCollectionEx!
 Microsoft.TemplateEngine.Core.VariableCollection.VariableCollection(Microsoft.TemplateEngine.Abstractions.IVariableCollection? parent, System.Collections.Generic.IDictionary<string!, object!>! values) -> void
+Microsoft.TemplateEngine.Core.VariableCollectionEx
+Microsoft.TemplateEngine.Core.VariableCollectionEx.ParameterSetData.get -> Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData!
+Microsoft.TemplateEngine.Core.VariableCollectionEx.VariableCollectionEx() -> void
+Microsoft.TemplateEngine.Core.VariableCollectionEx.VariableCollectionEx(Microsoft.TemplateEngine.Abstractions.IVariableCollection? parent, System.Collections.Generic.IDictionary<string!, object!>! values, Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData! parameterSetData) -> void
+Microsoft.TemplateEngine.Core.VariableCollectionEx.VariableCollectionEx(Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData! parameterSetData) -> void
 static Microsoft.TemplateEngine.Core.CommonOperations.ConsumeWholeLine(this Microsoft.TemplateEngine.Core.Contracts.IProcessorState! processor, ref int bufferLength, ref int currentBufferPosition) -> void
 static Microsoft.TemplateEngine.Core.CommonOperations.TrimWhitespace(this Microsoft.TemplateEngine.Core.Contracts.IProcessorState! processor, bool forward, bool backward, ref int bufferLength, ref int currentBufferPosition) -> void
 static Microsoft.TemplateEngine.Core.CommonOperations.WhitespaceHandler(this Microsoft.TemplateEngine.Core.Contracts.IProcessorState! processor, ref int bufferLength, ref int currentBufferPosition, bool wholeLine = false, bool trim = false, bool trimForward = false, bool trimBackward = false) -> void
 static Microsoft.TemplateEngine.Core.Expressions.Cpp.CppStyleEvaluatorDefinition.EvaluateFromString(Microsoft.Extensions.Logging.ILogger! logger, string! text, Microsoft.TemplateEngine.Abstractions.IVariableCollection! variables) -> bool
-static Microsoft.TemplateEngine.Core.VariableCollection.SetupVariables(Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData! parameters, Microsoft.TemplateEngine.Core.Contracts.IVariableConfig! variableConfig) -> Microsoft.TemplateEngine.Abstractions.IVariableCollection!
+static Microsoft.TemplateEngine.Core.VariableCollectionEx.Root(Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData! parameterSetData) -> Microsoft.TemplateEngine.Core.VariableCollectionEx!
+static Microsoft.TemplateEngine.Core.VariableCollectionEx.SetupVariables(Microsoft.TemplateEngine.Abstractions.Parameters.IParameterSetData! parameters, Microsoft.TemplateEngine.Core.Contracts.IVariableConfig! variableConfig) -> Microsoft.TemplateEngine.Abstractions.IVariableCollectionEx!
 ~static Microsoft.TemplateEngine.Core.Expressions.Shared.SharedEvaluatorDefinition<TSelf, TTokens>.EvaluateFromString(Microsoft.Extensions.Logging.ILogger logger, string text, Microsoft.TemplateEngine.Abstractions.IVariableCollection variables) -> bool
 ~static Microsoft.TemplateEngine.Core.Expressions.Shared.SharedEvaluatorDefinition<TSelf, TTokens>.EvaluateFromString(Microsoft.Extensions.Logging.ILogger logger, string text, Microsoft.TemplateEngine.Abstractions.IVariableCollection variables, out string faultedMessage, System.Collections.Generic.HashSet<string> referencedVariablesKeys = null) -> bool

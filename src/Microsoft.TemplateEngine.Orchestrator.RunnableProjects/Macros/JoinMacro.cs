@@ -17,7 +17,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "join";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, JoinMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, JoinMacroConfig config)
         {
             List<string> values = new();
             foreach ((JoinMacroConfig.JoinType Type, string Value) symbol in config.Symbols)

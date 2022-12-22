@@ -15,7 +15,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override Guid Id { get; } = new Guid("642E0443-F82B-4A4B-A797-CC1EB42221AE");
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, ProcessValueFormMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, ProcessValueFormMacroConfig config)
         {
             string? value = string.Empty;
             if (!vars.TryGetValue(config.SourceVariable, out object working))

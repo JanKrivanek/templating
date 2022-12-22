@@ -105,54 +105,6 @@ namespace Microsoft.TemplateEngine.Core
 
         public static VariableCollection Root(IDictionary<string, object> values) => new(null, values);
 
-        public static IVariableCollection SetupVariables(IParameterSetData parameters, IVariableConfig variableConfig)
-        {
-            IVariableCollection variables = Root();
-
-            Dictionary<string, VariableCollection> collections = new Dictionary<string, VariableCollection>();
-
-            foreach (KeyValuePair<string, string> source in variableConfig.Sources)
-            {
-                VariableCollection? variablesForSource = null;
-                string format = source.Value;
-
-                switch (source.Key)
-                {
-                    //may be extended for other categories in future if needed.
-                    case "user":
-                        variablesForSource = VariableCollectionFromParameters(parameters, format);
-
-                        if (variableConfig.FallbackFormat != null)
-                        {
-                            VariableCollection variablesFallback = VariableCollectionFromParameters(parameters, variableConfig.FallbackFormat);
-                            variablesFallback.Parent = variablesForSource;
-                            variablesForSource = variablesFallback;
-                        }
-                        break;
-                }
-                if (variablesForSource != null)
-                {
-                    collections[source.Key] = variablesForSource;
-                }
-            }
-
-            foreach (string order in variableConfig.Order)
-            {
-                IVariableCollection current = collections[order.ToString()];
-
-                IVariableCollection tmp = current;
-                while (tmp.Parent != null)
-                {
-                    tmp = tmp.Parent;
-                }
-
-                tmp.Parent = variables;
-                variables = current;
-            }
-
-            return variables;
-        }
-
         public void Add(KeyValuePair<string, object> item)
         {
             if (_parent?.ContainsKey(item.Key) ?? false)
@@ -247,22 +199,8 @@ namespace Microsoft.TemplateEngine.Core
             return _parent?.TryGetValue(key, out value) ?? false;
         }
 
-        private static VariableCollection VariableCollectionFromParameters(IParameterSetData parameters, string format)
-        {
-            VariableCollection vc = new VariableCollection();
-            foreach (ITemplateParameter param in parameters.ParametersDefinition)
-            {
-                string key = string.Format(format ?? "{0}", param.Name);
-
-                if (parameters.TryGetValue(param, out ParameterData value) &&
-                    value.IsEnabled && value.Value != null)
-                {
-                    vc[key] = value.Value;
-                }
-            }
-
-            return vc;
-        }
+        public VariableCollectionEx ToVariableCollectionEx() =>
+            new VariableCollectionEx(Parent, _values, ParameterSetData.Empty);
 
         private void OnKeysChanged()
         {

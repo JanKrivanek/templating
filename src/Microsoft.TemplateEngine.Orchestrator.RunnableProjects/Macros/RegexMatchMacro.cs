@@ -15,7 +15,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "regexMatch";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, RegexMatchMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, RegexMatchMacroConfig config)
         {
             if (!variableCollection.TryGetValue(config.Source, out object working))
             {

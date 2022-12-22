@@ -17,10 +17,10 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => MacroType;
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, GuidMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, GuidMacroConfig config)
             => EvaluateInternal(Guid.NewGuid(), environmentSettings, vars, config);
 
-        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, GuidMacroConfig config)
+        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, GuidMacroConfig config)
         {
             environmentSettings.Host.Logger.LogDebug("[{macro}]: deterministic mode enabled.", nameof(GuidMacro));
             EvaluateInternal(DeterministicModeValue, environmentSettings, variables, config);

@@ -1,12 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Core;
-using Microsoft.TemplateEngine.Core.Contracts;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.ConfigModel;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros;
 using Microsoft.TemplateEngine.TestHelper;
@@ -36,7 +32,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             RandomMacro macro = new();
             RandomMacroConfig macroConfig = new(macro, variableName, null, low, high);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
 
@@ -68,7 +64,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             }
 
             GeneratedSymbol symbol = new(variableName, "random", jsonParameters);
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             RandomMacro macro = new();
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
@@ -84,7 +80,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         [Fact]
         public void TestDeterministicMode()
         {
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             RandomMacro macro = new();
             RandomMacroConfig config = new(macro, "test", "integer", 10, 100);
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, config);
@@ -104,7 +100,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             };
             GeneratedSymbol deferredConfig = new(variableName, "random", jsonParameters, "integer");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             RandomMacro macro = new();
 
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, deferredConfig);
@@ -120,7 +116,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
 
             Dictionary<string, string> jsonParameters = new(StringComparer.OrdinalIgnoreCase);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "random", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'random' should have 'low' property defined.", ex.Message);
         }

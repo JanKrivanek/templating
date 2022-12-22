@@ -14,7 +14,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "constant";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, ConstantMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, ConstantMacroConfig config)
         {
             vars[config.VariableName] = config.Value;
             environmentSettings.Host.Logger.LogDebug("[{macro}]: Variable '{var}' was assigned to value '{value}'.", nameof(ConstantMacro), config.VariableName, config.Value);

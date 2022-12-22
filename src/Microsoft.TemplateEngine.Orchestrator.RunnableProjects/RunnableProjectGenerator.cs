@@ -115,7 +115,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects
             }
 
             RemoveDisabledParameters(parameters, templateConfig);
-            IVariableCollection variables = SetupVariables(parameters, templateConfig.GlobalOperationConfig.VariableSetup);
+            IVariableCollectionEx variables = SetupVariables(parameters, templateConfig.GlobalOperationConfig.VariableSetup);
             await templateConfig.EvaluateBindSymbolsAsync(environmentSettings, variables, cancellationToken).ConfigureAwait(false);
             cancellationToken.ThrowIfCancellationRequested();
             MacroProcessor.ProcessMacros(environmentSettings, templateConfig.GlobalOperationConfig, variables);
@@ -309,7 +309,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects
             cancellationToken.ThrowIfCancellationRequested();
 
             RemoveDisabledParameters(parameters, runnableProjectConfig);
-            IVariableCollection variables = SetupVariables(parameters, runnableProjectConfig.GlobalOperationConfig.VariableSetup);
+            IVariableCollectionEx variables = SetupVariables(parameters, runnableProjectConfig.GlobalOperationConfig.VariableSetup);
             await runnableProjectConfig.EvaluateBindSymbolsAsync(environmentSettings, variables, cancellationToken).ConfigureAwait(false);
 
             cancellationToken.ThrowIfCancellationRequested();
@@ -343,9 +343,9 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects
                 .ForEach(p => runnableProjectConfig.RemoveParameter(p.ParameterDefinition));
         }
 
-        private static IVariableCollection SetupVariables(IParameterSetData parameters, IVariableConfig variableConfig)
+        private static IVariableCollectionEx SetupVariables(IParameterSetData parameters, IVariableConfig variableConfig)
         {
-            IVariableCollection variables = VariableCollection.SetupVariables(parameters, variableConfig);
+            IVariableCollectionEx variables = VariableCollectionEx.SetupVariables(parameters, variableConfig);
 
             foreach (Parameter param in parameters.ParametersDefinition.OfType<Parameter>())
             {

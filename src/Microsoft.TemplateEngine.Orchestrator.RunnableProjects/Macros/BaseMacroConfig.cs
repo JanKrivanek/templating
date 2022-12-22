@@ -36,9 +36,9 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         internal string DataType { get; } = "string";
 
-        internal abstract void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars);
+        internal abstract void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars);
 
-        internal virtual void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars) => Evaluate(environmentSettings, vars);
+        internal virtual void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars) => Evaluate(environmentSettings, vars);
     }
 
     internal abstract class BaseMacroConfig<TMacro, TMacroConfig> : BaseMacroConfig, IMacroConfig
@@ -53,12 +53,12 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         internal TMacro Macro { get; }
 
-        internal override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars)
+        internal override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars)
         {
             Macro.Evaluate(environmentSettings, vars, (TMacroConfig)this);
         }
 
-        internal override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars)
+        internal override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars)
         {
             if (Macro is IDeterministicModeMacro<TMacroConfig> deterministicMacro)
             {

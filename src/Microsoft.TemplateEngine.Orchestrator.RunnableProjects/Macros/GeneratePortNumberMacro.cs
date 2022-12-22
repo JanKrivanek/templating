@@ -14,13 +14,13 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "port";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, GeneratePortNumberConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, GeneratePortNumberConfig config)
         {
             vars[config.VariableName] = config.Port;
             environmentSettings.Host.Logger.LogDebug("[{macro}]: Variable '{var}' was assigned to value '{value}'.", nameof(GeneratePortNumberMacro), config.VariableName, config.Port);
         }
 
-        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, GeneratePortNumberConfig config)
+        public override void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, GeneratePortNumberConfig config)
         {
             variables[config.VariableName] = config.Low;
             environmentSettings.Host.Logger.LogDebug("[{macro}]: Variable '{var}' was assigned to value '{value}' in deterministic mode.", nameof(GeneratePortNumberMacro), config.VariableName, config.Low);

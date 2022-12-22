@@ -38,7 +38,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             CoalesceMacro macro = new();
             CoalesceMacroConfig macroConfig = new(macro, "test", "string", "varA", defaultValue, "varB");
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             if (sourceValue != null)
             {
                 variables["varA"] = sourceValue;
@@ -81,7 +81,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
                 jsonParameters["defaultValue"] = JExtensions.ToJsonString(defaultValue);
             }
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             if (sourceValue != null)
             {
                 variables["varA"] = sourceValue;
@@ -118,7 +118,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
                 { "fallbackVariableName", JExtensions.ToJsonString("varB") }
             };
 
-            VariableCollection variables = new()
+            VariableCollectionEx variables = new()
             {
                 ["varA"] = 0,
                 ["varB"] = 10
@@ -138,7 +138,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             {
                 { "fallbackVariableName", JExtensions.ToJsonString("varB") }
             };
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "coalesce", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'coalesce' should have 'sourceVariableName' property defined.", ex.Message);
         }
@@ -152,7 +152,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             {
                 { "sourceVariableName", JExtensions.ToJsonString("varA") }
             };
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "coalesce", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'coalesce' should have 'fallbackVariableName' property defined.", ex.Message);
         }

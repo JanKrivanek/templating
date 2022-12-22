@@ -14,7 +14,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override string Type => "switch";
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, SwitchMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, SwitchMacroConfig config)
         {
             string result = string.Empty;   // default if no condition assigns a value
 

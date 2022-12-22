@@ -22,7 +22,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects
         internal static void ProcessMacros(
             IEngineEnvironmentSettings environmentSettings,
             GlobalRunConfig runConfig,
-            IVariableCollection variables)
+            IVariableCollectionEx variables)
         {
             bool deterministicMode = IsDeterministicModeEnabled(environmentSettings);
 

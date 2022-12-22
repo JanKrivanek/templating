@@ -1,11 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System;
-using System.Collections.Generic;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Core;
-using Microsoft.TemplateEngine.Core.Contracts;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Abstractions;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.ConfigModel;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros;
@@ -37,7 +34,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             NowMacroConfig macroConfig = new(macro, variableName, format, utc);
             Assert.Equal("string", macroConfig.DataType);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
             Assert.IsType<string>(variables[variableName]);
@@ -62,7 +59,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
                 { "utc", JExtensions.ToJsonString(utc) }
             };
             GeneratedSymbol symbol = new(variableName, "now", jsonParameters);
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             NowMacro macro = new();
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
@@ -100,7 +97,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
         [Fact]
         public void TestDeterministicMode()
         {
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             NowMacro macro = new();
             NowMacroConfig config = new(macro, "test", "yyyy-MM-dd HH:mm:ss");
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, config);
@@ -122,7 +119,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             };
             GeneratedSymbol deferredConfig = new(variableName, "NowMacro", jsonParameters, "string");
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
             NowMacro macro = new();
 
             macro.EvaluateDeterministically(_engineEnvironmentSettings, variables, deferredConfig);
@@ -141,7 +138,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             NowMacroConfig macroConfig = new(macro, variableName, "yyyy-MM-dd HH:mm:ss", false);
             Assert.Equal("string", macroConfig.DataType);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.EvaluateConfig(_engineEnvironmentSettings, variables, macroConfig);
             Assert.IsType<string>(variables[variableName]);

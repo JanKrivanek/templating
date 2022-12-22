@@ -4,6 +4,7 @@
 using System;
 using Microsoft.Extensions.Logging;
 using Microsoft.TemplateEngine.Abstractions;
+using Microsoft.TemplateEngine.Abstractions.Parameters;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Abstractions;
 
 namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
@@ -14,7 +15,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
 
         public override Guid Id { get; } = new("11C6EACF-8D24-42FD-8FC6-84063FCD8F14");
 
-        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection variableCollection, CoalesceMacroConfig config)
+        public override void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variableCollection, CoalesceMacroConfig config)
         {
             if (variableCollection.TryGetValue(config.SourceVariableName, out object currentSourceValue) && currentSourceValue != null)
             {
@@ -24,21 +25,15 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
                 }
                 else
                 {
-                    if (currentSourceValue is string str && string.IsNullOrEmpty(str))
+                    if (variableCollection.ParameterSetData.TryGetValue(config.SourceVariableName, out ParameterData? parameterData)
+                        && parameterData!.DataSource is not DataSource.User and not DataSource.DefaultIfNoValue)
+                    {
+                        environmentSettings.Host.Logger.LogDebug("[{macro}]: '{var}': source value '{source}' not specified by user (data source: '{dataSource}'), fall back.", nameof(CoalesceMacro), config.VariableName, currentSourceValue, parameterData.DataSource);
+                    }
+                    else if (currentSourceValue is string str && string.IsNullOrEmpty(str))
                     {
                         //do nothing, empty value for string is equivalent to null.
                         environmentSettings.Host.Logger.LogDebug("[{macro}]: '{var}': source value '{source}' is an empty string, fall back.", nameof(CoalesceMacro), config.VariableName, currentSourceValue);
-                    }
-                    else if (currentSourceValue.GetType().IsValueType && Activator.CreateInstance(currentSourceValue.GetType()).Equals(currentSourceValue))
-                    {
-                        //do nothing, the value is a value type and is a default.
-                        environmentSettings.Host.Logger.LogDebug(
-                            "[{macro}]: '{var}': source value '{source}' of type '{type}' is equivalent to its default value '{default}', fall back.",
-                            nameof(CoalesceMacro),
-                            config.VariableName,
-                            config.SourceVariableName,
-                            currentSourceValue.GetType().Name,
-                            currentSourceValue);
                     }
                     else
                     {

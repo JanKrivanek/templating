@@ -24,7 +24,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
             return CreateConfig(environmentSettings, deferredConfig);
         }
 
-        public void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollection vars, IGeneratedSymbolConfig deferredConfig)
+        public void Evaluate(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx vars, IGeneratedSymbolConfig deferredConfig)
         {
             Evaluate(environmentSettings, vars, CreateConfig(environmentSettings, deferredConfig));
         }
@@ -39,7 +39,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
     /// <typeparam name="T">The macro config.</typeparam>
     internal abstract class BaseNondeterministicMacro<T> : BaseGeneratedSymbolMacro<T>, IDeterministicModeMacro<T> where T : BaseMacroConfig, IMacroConfig
     {
-        public abstract void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, T config);
+        public abstract void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, T config);
     }
 
     /// <summary>
@@ -48,6 +48,6 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros
     /// <typeparam name="T">The macro config.</typeparam>
     internal abstract class BaseNondeterministicGenSymMacro<T> : BaseNondeterministicMacro<T>, IDeterministicModeMacro<IGeneratedSymbolConfig> where T : BaseMacroConfig, IMacroConfig
     {
-        public void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollection variables, IGeneratedSymbolConfig config) => EvaluateDeterministically(environmentSettings, variables, CreateConfig(environmentSettings, config));
+        public void EvaluateDeterministically(IEngineEnvironmentSettings environmentSettings, IVariableCollectionEx variables, IGeneratedSymbolConfig config) => EvaluateDeterministically(environmentSettings, variables, CreateConfig(environmentSettings, config));
     }
 }

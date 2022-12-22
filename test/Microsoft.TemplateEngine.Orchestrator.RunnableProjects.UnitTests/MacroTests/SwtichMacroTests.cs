@@ -1,13 +1,8 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using Microsoft.TemplateEngine.Abstractions;
 using Microsoft.TemplateEngine.Core;
-using Microsoft.TemplateEngine.Core.Contracts;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.ConfigModel;
 using Microsoft.TemplateEngine.Orchestrator.RunnableProjects.Macros;
 using Microsoft.TemplateEngine.TestHelper;
@@ -42,7 +37,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             SwitchMacro macro = new();
             SwitchMacroConfig macroConfig = new(macro, variableName, evaluator, dataType, switches);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             macro.Evaluate(_engineEnvironmentSettings, variables, macroConfig);
 
@@ -85,7 +80,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
 
             GeneratedSymbol symbol = new(variableName, "switch", jsonParameters, dataType);
 
-            IVariableCollection variables = new VariableCollection();
+            IVariableCollectionEx variables = new VariableCollectionEx();
 
             SwitchMacro macro = new();
             macro.Evaluate(_engineEnvironmentSettings, variables, symbol);
@@ -111,7 +106,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
             SwitchMacro macro = new();
             SwitchMacroConfig macroConfig = new(macro, variableName, evaluator, dataType, switches);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             if (varValue is not null)
             {
                 variables["testVar"] = varValue;
@@ -130,7 +125,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
 
             Dictionary<string, string> jsonParameters = new(StringComparer.OrdinalIgnoreCase);
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "switch", jsonParameters)));
             Assert.Equal("Generated symbol 'test' of type 'switch' should have 'cases' property defined.", ex.Message);
         }
@@ -154,7 +149,7 @@ namespace Microsoft.TemplateEngine.Orchestrator.RunnableProjects.UnitTests.Macro
                 { "cases", switchCases }
             };
 
-            VariableCollection variables = new();
+            VariableCollectionEx variables = new();
             TemplateAuthoringException ex = Assert.Throws<TemplateAuthoringException>(() => macro.Evaluate(_engineEnvironmentSettings, variables, new GeneratedSymbol("test", "switch", jsonParameters)));
             Assert.Equal("Generated symbol 'test': array 'cases' should contain JSON objects with property 'value'.", ex.Message);
         }
